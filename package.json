@@ -12,6 +12,9 @@
   },
   "author": "",
   "license": "UNLICENSED",
+  "dependencies": {
+    "random": "^2.1.1"
+  },
   "bugs": {
     "url": "https://github.com/honzie/trackpad/issues"
   },

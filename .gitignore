@@ -1,0 +1,6 @@
+.DS_Store
+
+.nyc_output/
+built/
+coverage/
+node_modules/
