@@ -4,7 +4,7 @@ Monte Carlo Project Planning
 ## General Structure
 
 TODO:
-- Use proper randomization libraries when picking team members (shuffling)
+- Use proper randomization libraries when picking team members for the on deck and insertions (shuffling)
 
 ### Input
 
