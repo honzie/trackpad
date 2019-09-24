@@ -17,8 +17,8 @@ module.exports = {
           high: 12,
         },
         max: {
-          low: 12,
-          high: 12,
+          low: 11,
+          high: 11,
         },
       },
     },
@@ -26,12 +26,12 @@ module.exports = {
       name: 'Implement idea',
       estimates: {
         hans: {
-          low: 12,
-          high: 12,
+          low: 10,
+          high: 10,
         },
         max: {
-          low: 12,
-          high: 12,
+          low: 9,
+          high: 9,
         },
       },
     },
@@ -39,12 +39,12 @@ module.exports = {
       name: '???',
       estimates: {
         hans: {
-          low: 12,
-          high: 12,
+          low: 4,
+          high: 4,
         },
         max: {
-          low: 12,
-          high: 12,
+          low: 7,
+          high: 7,
         },
       },
     },
@@ -52,12 +52,12 @@ module.exports = {
       name: 'Profit',
       estimates: {
         hans: {
-          low: 12,
-          high: 12,
+          low: 6,
+          high: 6,
         },
         max: {
-          low: 12,
-          high: 12,
+          low: 5,
+          high: 5,
         },
       },
     },

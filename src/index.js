@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 const normal = require('./normal')
 
 // TODO REMOVE
@@ -9,6 +11,9 @@ console.log(`TRACKPAD
   Project: ${project.name}
   Team: ${Object.keys(project.team).join(', ')}
   Tasks: ${project.tasks.length}
+  Operational Overhead: TODO
+  Oncall Overhead: TODO
+  Yearly Vacation / Sick Days: TODO
 `);
 
 // SET UP PROJECT
@@ -32,53 +37,58 @@ const taskRunners = project.tasks.map((task) => {
   return taskRunner;
 });
 
-// Set up an on deck.
-const onDeck = {
-  order: ['t0'],
-  t0: Object.keys(project.team),
-};
+const simulationResults = {};
 
 console.log(`RUNNING SIMULATIONS
   ====
 `);
 
 (() => {
+  // Set up an on deck.
+  const simulation = {
+    availabilities: [0],
+    currentAvailabilityPointer: 0,
+    taskPointer: 0,
+    0: Object.keys(project.team),
+  };
+
   console.log('Simulation 1');
 
-  console.log('od', onDeck)
-})();
+  while (simulation.taskPointer < taskRunners.length) {
+    const currentTime = simulation.availabilities[simulation.currentAvailabilityPointer];
 
+    // Assign tasks for everyone idle at the current time
+    _.shuffle(simulation[currentTime]).forEach((name) => {
+      // TODO, floor, ensure >= 0
+      const taskTime = taskRunners[simulation.taskPointer].getTime[name]();
+      const taskCompletion = currentTime + taskTime;
 
-/*
-const idleTeam = Object.keys(project.team);
-console.log('Idle Team', idleTeam)
+      // Add the task completion
+      if (simulation[taskCompletion]) {
+        // There's already at least one free team member at that time
+        // Add the new team member's availability
+        simulation[taskCompletion].push(name);
+      } else {
+        // This is a new availability slot
+        // Add the team member, and insert it into the availabilities array
+        const insertAt = _.sortedIndex(simulation.availabilities, taskCompletion);
 
+        simulation.availabilities = simulation.availabilities.slice(0, insertAt).concat(taskCompletion, simulation.availabilities.slice(insertAt));
+        simulation[taskCompletion] = [name];
+      }
 
-const low = 10;
-const high = 12;
+      // Increment task
+      simulation.taskPointer++;
+    });
 
-const getNormal = normal(low, high);
-
-const percentages10 = {};
-
-const runs = 10000000;
-for (let i = 0; i < runs; i++) {
-  const normalVal = Math.floor(getNormal());
-
-  if (normalVal < low) {
-    percentages10.lt10 = percentages10.lt10 ? percentages10.lt10 + 1 : 1
-  } else if (normalVal >= high) {
-    percentages10.gt90 = percentages10.gt90 ? percentages10.gt90 + 1 : 1
+    // Move the availability pointer
+    simulation.currentAvailabilityPointer++;
   }
 
-  //console.log(normalVal)
+  // Add this to the simulations results
+  const projectDuration = simulation.availabilities[simulation.availabilities.length - 1];
+  simulationResults[projectDuration] = simulationResults[projectDuration] ? simulationResults[projectDuration] + 1 : 1;
 
-  //percentages[normalVal] = percentages[normalVal] ? percentages[normalVal] + 1 : 1;
-}
+})();
 
-console.log('<low', percentages10.lt10 / runs * 100)
-console.log('---', (runs - percentages10.lt10 - percentages10.gt90) / runs * 100)
-console.log('>high', percentages10.gt90 / runs * 100)
-
-//console.log('percentages', percentages)
-*/
+console.log('results', simulationResults)

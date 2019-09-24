@@ -13,6 +13,7 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
+    "lodash": "^4.17.15",
     "random": "^2.1.1"
   },
   "bugs": {
