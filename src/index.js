@@ -62,8 +62,7 @@ for (let i = 1; i <= 100; i++) {
 
       // Assign tasks for everyone idle at the current time
       _.shuffle(simulation[currentTime]).forEach((name) => {
-        // TODO, floor, ensure >= 0
-        const taskTime = taskRunners[simulation.taskPointer].getTime[name]();
+        const taskTime = Math.max(Math.floor(taskRunners[simulation.taskPointer].getTime[name]()), 0);
         const taskCompletion = currentTime + taskTime;
 
         // Add the task completion
