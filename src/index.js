@@ -95,9 +95,18 @@ for (let i = 1; i <= 100; i++) {
   console.log(`  ${i}%`);
 }
 
-console.log();
+// LOG RESULTS
 console.log(`RESULTS:
   ====
-${JSON.stringify(simulationResults, null, 2)}
-
 `);
+
+const resultTimes = Object.keys(simulationResults).sort();
+let runningTotal = 0;
+
+for (let k = resultTimes[0] - 1; k <= resultTimes[resultTimes.length - 1] ; k++) {
+  if (simulationResults[k]) {
+    runningTotal += simulationResults[k];
+  }
+
+  console.log(`  Hour ${k}: ${runningTotal / runs * 100}% chance of completion`);
+}
