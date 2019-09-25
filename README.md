@@ -6,8 +6,8 @@ Monte Carlo Project Planning
 ### Input
 
 MVP
-- List of tasks
-- List of team members, including TBH members
+- (done) List of tasks
+- (done) List of team members, including TBH members
 - Range of times for each task from each team member (including predictions for TBH members)
 - Holiday schedule
 - Number of times to run simulation
@@ -25,6 +25,7 @@ Stretch
 - Oncall overhead
 - Compare various randomization methods, see if it changes the s-curve output
 - Compare quicker randomization heuristics (e.g. dividing bell curves into X slices and choosing one via weight)
+- Compare number vs integer (hour) randomization results
 
 ### Processing
 

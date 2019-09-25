@@ -6,6 +6,10 @@ const normal = require('./normal')
 const project = require('../examples/simple-project');
 // END TODO
 
+// COnfiguration to abstract
+const runs = 100000; // multiple of 100
+const perBatch = runs / 100;
+
 console.log(`TRACKPAD
   ====
   Project: ${project.name}
@@ -43,52 +47,58 @@ console.log(`RUNNING SIMULATIONS
   ====
 `);
 
-(() => {
-  // Set up an on deck.
-  const simulation = {
-    availabilities: [0],
-    currentAvailabilityPointer: 0,
-    taskPointer: 0,
-    0: Object.keys(project.team),
-  };
+for (let i = 1; i <= 100; i++) {
+  for (let j = 0; j < perBatch; j++) {
+    // Set up an on deck.
+    const simulation = {
+      availabilities: [0],
+      currentAvailabilityPointer: 0,
+      taskPointer: 0,
+      0: Object.keys(project.team),
+    };
 
-  console.log('Simulation 1');
+    while (simulation.taskPointer < taskRunners.length) {
+      const currentTime = simulation.availabilities[simulation.currentAvailabilityPointer];
 
-  while (simulation.taskPointer < taskRunners.length) {
-    const currentTime = simulation.availabilities[simulation.currentAvailabilityPointer];
+      // Assign tasks for everyone idle at the current time
+      _.shuffle(simulation[currentTime]).forEach((name) => {
+        // TODO, floor, ensure >= 0
+        const taskTime = taskRunners[simulation.taskPointer].getTime[name]();
+        const taskCompletion = currentTime + taskTime;
 
-    // Assign tasks for everyone idle at the current time
-    _.shuffle(simulation[currentTime]).forEach((name) => {
-      // TODO, floor, ensure >= 0
-      const taskTime = taskRunners[simulation.taskPointer].getTime[name]();
-      const taskCompletion = currentTime + taskTime;
+        // Add the task completion
+        if (simulation[taskCompletion]) {
+          // There's already at least one free team member at that time
+          // Add the new team member's availability
+          simulation[taskCompletion].push(name);
+        } else {
+          // This is a new availability slot
+          // Add the team member, and insert it into the availabilities array
+          const insertAt = _.sortedIndex(simulation.availabilities, taskCompletion);
 
-      // Add the task completion
-      if (simulation[taskCompletion]) {
-        // There's already at least one free team member at that time
-        // Add the new team member's availability
-        simulation[taskCompletion].push(name);
-      } else {
-        // This is a new availability slot
-        // Add the team member, and insert it into the availabilities array
-        const insertAt = _.sortedIndex(simulation.availabilities, taskCompletion);
+          simulation.availabilities = simulation.availabilities.slice(0, insertAt).concat(taskCompletion, simulation.availabilities.slice(insertAt));
+          simulation[taskCompletion] = [name];
+        }
 
-        simulation.availabilities = simulation.availabilities.slice(0, insertAt).concat(taskCompletion, simulation.availabilities.slice(insertAt));
-        simulation[taskCompletion] = [name];
-      }
+        // Increment task
+        simulation.taskPointer++;
+      });
 
-      // Increment task
-      simulation.taskPointer++;
-    });
+      // Move the availability pointer
+      simulation.currentAvailabilityPointer++;
+    }
 
-    // Move the availability pointer
-    simulation.currentAvailabilityPointer++;
+    // Add this to the simulations results
+    const projectDuration = simulation.availabilities[simulation.availabilities.length - 1];
+    simulationResults[projectDuration] = simulationResults[projectDuration] ? simulationResults[projectDuration] + 1 : 1;
   }
 
-  // Add this to the simulations results
-  const projectDuration = simulation.availabilities[simulation.availabilities.length - 1];
-  simulationResults[projectDuration] = simulationResults[projectDuration] ? simulationResults[projectDuration] + 1 : 1;
+  console.log(`  ${i}%`);
+}
 
-})();
+console.log();
+console.log(`RESULTS:
+  ====
+${JSON.stringify(simulationResults, null, 2)}
 
-console.log('results', simulationResults)
+`);
