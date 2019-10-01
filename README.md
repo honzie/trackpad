@@ -27,6 +27,7 @@ Stretch
 - Compare quicker randomization heuristics (e.g. dividing bell curves into X slices and choosing one via weight)
 - Compare number vs integer (hour) randomization results
 - Website to handle task estimation (log in, per user, track results, show visualizations of test runs, etc)
+- Continual (nightly / weekly / monthly?) running of the job based on remaining task list, to see if s-curve steepens, moves in, or moves out. (maybe also allow for adding new estimates monthly or at milestones, and generating new s curves over the old ones)
 
 ### Processing
 
