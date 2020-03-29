@@ -6,7 +6,7 @@ const normal = require('./normal')
 const project = require('../examples/simple-project');
 // END TODO
 
-// COnfiguration to abstract
+// Configuration to abstract
 const runs = 100000; // multiple of 100
 const perBatch = runs / 100;
 
@@ -62,6 +62,10 @@ for (let i = 1; i <= 100; i++) {
 
       // Assign tasks for everyone idle at the current time
       _.shuffle(simulation[currentTime]).forEach((name) => {
+        if (simulation.taskPointer >= taskRunners.length) {
+          return;
+        }
+
         const taskTime = Math.max(Math.floor(taskRunners[simulation.taskPointer].getTime[name]()), 0);
         const taskCompletion = currentTime + taskTime;
 
