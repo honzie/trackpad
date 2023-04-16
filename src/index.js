@@ -1,13 +1,14 @@
-const _ = require('lodash');
+import _ from 'lodash';
 
-const normal = require('./normal')
+import normal from './normal.js';
 
 // TODO REMOVE
-const project = require('../examples/simple-project');
+import project from '../examples/simple-project.js'; 
+//const project = require('../examples/simple-project');
 // END TODO
 
 // Configuration to abstract
-const runs = 100000; // multiple of 100
+const runs = 100000; // multiple of 100, likely 100000
 const perBatch = runs / 100;
 
 console.log(`TRACKPAD
@@ -41,7 +42,7 @@ const taskRunners = project.tasks.map((task) => {
   return taskRunner;
 });
 
-const simulationResults = {};
+const simulationResults = [];
 
 console.log(`RUNNING SIMULATIONS
   ====
@@ -66,7 +67,8 @@ for (let i = 1; i <= 100; i++) {
           return;
         }
 
-        const taskTime = Math.max(Math.floor(taskRunners[simulation.taskPointer].getTime[name]()), 0);
+        const estimatedTime = Math.floor(taskRunners[simulation.taskPointer].getTime[name]());
+        const taskTime = Math.max(estimatedTime, 1);
         const taskCompletion = currentTime + taskTime;
 
         // Add the task completion
@@ -96,7 +98,7 @@ for (let i = 1; i <= 100; i++) {
     simulationResults[projectDuration] = simulationResults[projectDuration] ? simulationResults[projectDuration] + 1 : 1;
   }
 
-  console.log(`  ${i}%`);
+  console.log(`  ${i}%`); // This shows percentage completion
 }
 
 // LOG RESULTS
@@ -104,13 +106,30 @@ console.log(`RESULTS:
   ====
 `);
 
-const resultTimes = Object.keys(simulationResults).sort();
+//const simulationResults = [];...for (let k = 0; k <= simulationResults.length ; k++) {  if (simulationResults[k]) {    runningTotal += simulationResults[k];  }  const percent = Math.floor(runningTotal / runs * 100);  if (percent % 5 === 0 && percent > 0) {    console.log(`  Day ${k}: ${percent}% chance of completion`);  }}
+//const percent = Math.floor(runningTotal / runs * 100);  if (percent % 5 === 0 && percent > 0) {    console.log(`  Day ${k}: ${percent}% chance of completion`);  }}
+
 let runningTotal = 0;
 
-for (let k = resultTimes[0] - 1; k <= resultTimes[resultTimes.length - 1] ; k++) {
+for (let k = 0; k <= simulationResults.length ; k++) {
   if (simulationResults[k]) {
     runningTotal += simulationResults[k];
   }
 
-  console.log(`  Hour ${k}: ${runningTotal / runs * 100}% chance of completion`);
+  const percent = Math.floor(runningTotal / runs * 100);
+
+  if (percent % 5 === 0 && percent > 0) {
+    console.log(`  Day ${k}: ${percent}% chance of completion`);
+  }
 }
+
+//const resultTimes = Object.keys(simulationResults).sort();
+//let runningTotal = 0;
+//
+//for (let k = resultTimes[0] - 1; k <= resultTimes[resultTimes.length - 1] ; k++) {
+//  if (simulationResults[k]) {
+//    runningTotal += simulationResults[k];
+//  }
+//
+//  console.log(`  Hour ${k}: ${runningTotal / runs * 100}% chance of completion`);
+//}

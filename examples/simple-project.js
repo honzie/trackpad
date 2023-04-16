@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   name: 'Simple',
   team: {
     hans: {
@@ -13,7 +13,7 @@ module.exports = {
       name: 'Come up with good idea',
       estimates: {
         hans: {
-          low: 12,
+          low: 0,
           high: 12,
         },
         max: {
@@ -44,7 +44,7 @@ module.exports = {
         },
         max: {
           low: 7,
-          high: 7,
+          high: 70,
         },
       },
     },

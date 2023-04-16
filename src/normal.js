@@ -1,8 +1,7 @@
-const random = require('random');
+import random from 'random';
 
 // This could be configurable
 // At 10/90, sigma 31.6 fo 80%, 24.6 for 90%, 20.65 for 95%
-// TODO: Double check math here
 const referenceSigma = 24.6;
 const referenceLow = 10;
 const referenceHigh = 90;
@@ -16,7 +15,7 @@ const sigmaRatio = referenceSigma / (referenceHigh - referenceLow);
  * const getNormal = normal(low, high);
  * const normalVal = Math.floor(getNormal()); // Can be used multiple times
  */
-module.exports = (low, high) => {
+export default (low, high) => {
   const mu = (high + low) / 2;
   const sigma = (high - low) * sigmaRatio;
 

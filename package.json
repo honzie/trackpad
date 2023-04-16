@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Monte Carlo Project Planning",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/"
   },
   "repository": {
     "type": "git",
@@ -13,8 +15,8 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
-    "lodash": "^4.17.15",
-    "random": "^2.1.1"
+    "lodash": "^4.17.21",
+    "random": "^4.1.0"
   },
   "bugs": {
     "url": "https://github.com/honzie/trackpad/issues"
